@@ -1,6 +1,7 @@
 from flask import Flask, request
 import logging
 from logging.handlers import RotatingFileHandler
+import os
 
 app = Flask(__name__)
 
@@ -35,7 +36,7 @@ logger = setup_logger()
 def log_request():
 
     if request.path == "/favicon.ico":
-        # Ignore favicon requests
+        # Ignore favicon requests
         return "", 204
 
     log_message = {
@@ -59,4 +60,5 @@ def catch_all(path):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    port = int(os.environ.get("HONEYPOT_PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
